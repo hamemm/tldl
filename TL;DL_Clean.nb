@@ -1,0 +1,638 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     26428,        630]
+NotebookOptionsPosition[     24609,        594]
+NotebookOutlinePosition[     24982,        610]
+CellTagsIndexPosition[     24939,        607]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["TL;DL - Too Long Didn\[CloseCurlyQuote]t Listen", "Title",
+ CellChangeTimes->{{3.778732773911572*^9, 
+  3.7787327959302397`*^9}},ExpressionUUID->"30144e72-fd46-483b-b7e2-\
+3b32b315571e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"audio", " ", "=", " ", 
+   RowBox[{
+   "Import", "[", "\"\<C:\\\\Users\\\\Y\\\\Desktop\\\\Audio\\\\Sound.mp3\>\"",
+     "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.777480773677308*^9, 3.777480868881787*^9}, 
+   3.7774809136652145`*^9, 3.7776183926093225`*^9, 3.777879470882859*^9, {
+   3.7784079728788424`*^9, 3.7784079916530333`*^9}, 3.7784082309624767`*^9, 
+   3.7784086354340963`*^9, {3.778752251506205*^9, 
+   3.7787522521736803`*^9}},ExpressionUUID->"e0074f63-8aec-4377-8aca-\
+a5b48fb2b871"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generatingVocabulary", "[", "text_", "]"}], " ", ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "textLow", ",", " ", "textNouns", ",", " ", "plurals", ",", "singulars",
+        ",", " ", "rules", ",", " ", "textSingular", ",", " ", "textNA"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"textLow", " ", "=", " ", 
+       RowBox[{"ToLowerCase", "[", "text", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"textNouns", " ", "=", " ", 
+       RowBox[{"TextCases", "[", 
+        RowBox[{"textLow", ",", " ", "\"\<Noun\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"plurals", " ", "=", " ", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"If", "[", " ", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"StringTake", "[", 
+               RowBox[{"#", ",", " ", 
+                RowBox[{"-", "1"}]}], "]"}], "\[Equal]", " ", "\"\<s\>\""}], 
+             ",", " ", "#"}], "]"}], "&"}], "/@", "textNouns"}], ",", " ", 
+         "Null"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"rules", " ", "=", " ", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(ss)(es)\>\"", "]"}],
+           "\[RuleDelayed]", " ", "\"\<$1$2\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(sh)(es)\>\"", "]"}],
+           "\[RuleDelayed]", " ", "\"\<$1$2\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(ies)\>\"", "]"}], 
+          "\[RuleDelayed]", " ", 
+          RowBox[{"\"\<$1\>\"", "~~", "\"\<y\>\""}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(ss)\>\"", "]"}], 
+          "\[RuleDelayed]", " ", "\"\<$1$2\>\""}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(us)\>\"", "]"}], 
+          "\[RuleDelayed]", " ", "\"\<$1$2\>\""}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RegularExpression", "[", "\"\<(\\\\w+)(s)\>\"", "]"}], 
+          "\[RuleDelayed]", " ", "\"\<$1\>\""}]}], "\[IndentingNewLine]", 
+        "}"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"singulars", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"#", " ", "\[Rule]", " ", 
+          RowBox[{"StringReplace", "[", 
+           RowBox[{"#", ",", " ", "rules"}], "]"}]}], "&"}], "/@", 
+        "plurals"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"textSingular", " ", "=", " ", 
+       RowBox[{"StringReplace", "[", 
+        RowBox[{"textLow", ",", "singulars"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"textNA", " ", "=", " ", 
+       RowBox[{"TextCases", "[", 
+        RowBox[{"textLow", ",", " ", 
+         RowBox[{"\"\<Adjective\>\"", " ", "|", " ", "\"\<Noun\>\""}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"List", "[", 
+       RowBox[{"textSingular", ",", " ", "textNA"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.778733003728261*^9, 3.7787330421052265`*^9}, {
+  3.7787331120323224`*^9, 3.778733141615373*^9}, {3.7787331774769187`*^9, 
+  3.7787333135200605`*^9}, {3.7787333754557867`*^9, 3.7787334480946417`*^9}, {
+  3.7787334865558186`*^9, 3.7787335263451333`*^9}, {3.7787336239303064`*^9, 
+  3.77873362748184*^9}, {3.7787336690088663`*^9, 3.7787337020842323`*^9}, {
+  3.7787342301835375`*^9, 3.7787342323380804`*^9}, {3.77873645177099*^9, 
+  3.7787364972793703`*^9}, {3.778737148041421*^9, 3.7787371512617316`*^9}, {
+  3.778737226314229*^9, 3.7787372286528893`*^9}, {3.7787373895524645`*^9, 
+  3.7787373941407323`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"b5776b98-5a45-481a-b997-1b0e7eb1f1ac"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"distanceCalculator", "[", 
+    RowBox[{"l1_", ",", " ", "l2_"}], "]"}], " ", ":=", " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"tup", ",", " ", "listSum", ",", " ", "diff"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"tup", " ", "=", " ", 
+       RowBox[{"Tuples", "[", 
+        RowBox[{"{", 
+         RowBox[{"l1", ",", " ", "l2"}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"diff", " ", "=", " ", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Abs", "[", 
+           RowBox[{"Differences", "[", "#", "]"}], "]"}], "&"}], ",", " ", 
+         "tup"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"diff", " ", "=", 
+       RowBox[{"diff", "/.", 
+        RowBox[{"{", 
+         RowBox[{"0", "\[Rule]", " ", 
+          RowBox[{"1", "/", "$MachineEpsilon"}]}], "}"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"listSum", " ", "=", " ", 
+       RowBox[{"1", "/", "diff"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"N", "[", 
+       RowBox[{"Total", "[", "listSum", "]"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQB2IQLeAUJ5iu+sbxV2aPMIh2OM+rAqL3bk0E0ywP/mqA
+6Guv4/VBdJvCPCsQzZOx0w6svnO9F4huev/NG0SvuNpRBqK/mjypANFnTs/p
+ANERAiG9YPOqX0wE0bmCC2aB6E+Bh1aC6JgJZmvB9jxh2Qs2L2DhPhD9T3rq
+MRCteT74LIhOfFJ+DUSbOCy+D5Z/sec9iNbhegCmF/CrfgXRCX9LwLR3wgW9
+DCDtx6dnDqKd1K7YgOgPTI2OIDpu7VF3EH1nDYMviBZqXR0Jopc0Pk0G0XnM
+TzJAtMfNF2B6w/yMAhBdsWdlKYh2mRJVB6JlbivWg+g5a9jbQfRVCx4wfW2i
++1Sweevjp4FoAMlzrVM=
+  "],
+ CellLabel->"In[5]:=",ExpressionUUID->"20b81889-02a1-4e7b-8d11-34c6ced35df8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"calculatingTextDistance", "[", 
+    RowBox[{"vocabulary_", ",", " ", "textSingular_"}], " ", "]"}], " ", ":=",
+    "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "tupleList", ",", " ", "positions", ",", " ", "textDist", ",", " ", 
+       "tupleGraph"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"tupleList", " ", "=", " ", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"Subsets", "[", 
+          RowBox[{"vocabulary", ",", " ", 
+           RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+         RowBox[{"Thread", "[", 
+          RowBox[{"{", 
+           RowBox[{"vocabulary", ",", " ", "vocabulary"}], "}"}], "]"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"positions", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"List", "[", 
+          RowBox[{
+           RowBox[{"Position", "[", 
+            RowBox[{"textSingular", ",", " ", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ",", 
+           RowBox[{"Position", "[", 
+            RowBox[{"textSingular", ",", " ", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}], "&"}], "/@", 
+        "tupleList"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"textDist", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"distanceCalculator", "[", 
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+           RowBox[{"#", "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "&"}], "/@", 
+        "positions"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"tupleGraph", " ", "=", " ", 
+       RowBox[{"Graph", "[", 
+        RowBox[{
+         RowBox[{"UndirectedEdge", "@@@", "tupleList"}], ",", 
+         RowBox[{"EdgeWeight", " ", "\[Rule]", " ", 
+          RowBox[{"Flatten", "[", "textDist", "]"}]}], ",", 
+         RowBox[{"VertexLabels", "\[Rule]", "\"\<Name\>\""}]}], "]"}]}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7787337447816124`*^9, 3.7787337537069645`*^9}, {
+  3.778733795630767*^9, 3.7787338157490826`*^9}, {3.7787338463018227`*^9, 
+  3.778733950025372*^9}, {3.7787339831269274`*^9, 3.778734066244125*^9}, {
+  3.7787344951776905`*^9, 3.77873451874549*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"96de0fd0-4f38-4a3c-b719-26b24b91e279"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"assigningScores", "[", 
+    RowBox[{"matrixWeight_", ",", " ", "vocabulary_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "inout", ",", " ", "summation", ",", " ", "score", ",", " ", 
+       "summationMatrix", ",", " ", "scoreAssociation"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"inout", " ", "=", " ", 
+       RowBox[{"Total", "[", 
+        RowBox[{"matrixWeight", ",", " ", 
+         RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"summation", " ", "=", " ", "0"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"score", "  ", "=", " ", 
+       RowBox[{"Array", "[", 
+        RowBox[{
+         RowBox[{"1", " ", "&"}], ",", " ", 
+         RowBox[{"Length", "[", "vocabulary", "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"i", "=", "1"}], ",", " ", 
+        RowBox[{"i", "<=", " ", 
+         RowBox[{"Length", "[", "vocabulary", "]"}]}], ",", " ", 
+        RowBox[{"i", "++"}], ",", " ", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"summation", " ", "=", " ", "0"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"summationMatrix", " ", "=", " ", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"matrixWeight", " ", "/", "inout"}], ")"}], "*", " ", 
+           "score"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"summation", " ", "=", " ", 
+          RowBox[{"Total", "[", 
+           RowBox[{"summationMatrix", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", " ", "i"}], "]"}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"score", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], " ", "=", " ", 
+          RowBox[{"0.15", " ", "+", " ", 
+           RowBox[{"0.85", " ", "*", " ", "summation"}]}]}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"scoreAssociation", " ", "=", " ", 
+       RowBox[{"AssociationThread", "[", 
+        RowBox[{"vocabulary", ",", " ", "score"}], "]"}]}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.778734666374049*^9, 3.778734734713792*^9}, {
+   3.778734767735087*^9, 3.7787349172252407`*^9}, {3.7787352462391825`*^9, 
+   3.778735246580449*^9}, {3.778736017552004*^9, 3.7787360206852627`*^9}, 
+   3.778737508782127*^9},
+ CellLabel->"In[7]:=",ExpressionUUID->"63646c57-b665-42e5-b370-f47d7efe0104"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generatingPhrases", "[", 
+    RowBox[{"textSingular_", ",", " ", "vocabulary_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "phraseList", ",", " ", "wordListEmpty", ",", " ", "wordList", ",", " ",
+        "phrases", ",", " ", "uniquePhrases", ",", " ", "thinnedLists", ",", 
+       " ", "thinned"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"phraseList", " ", "=", " ", 
+       RowBox[{"DeleteStopwords", "[", "textSingular", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"wordListEmpty", " ", "=", " ", 
+       RowBox[{"StringDelete", "[", 
+        RowBox[{
+         RowBox[{"StringSplit", "[", 
+          RowBox[{"phraseList", ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"\"\<  \>\"", ",", " ", "\"\<,\>\""}], "}"}]}], "]"}], 
+         ",", " ", "PunctuationCharacter"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"wordList", " ", "=", " ", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"DeleteCases", "[", 
+          RowBox[{"wordListEmpty", ",", " ", "\"\<\>\""}], "]"}], ",", " ", 
+         "\"\< \>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"phrases", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringReplace", "[", 
+          RowBox[{
+           RowBox[{"StringReplace", "[", 
+            RowBox[{"#", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"StartOfString", "~~", "Whitespace"}], ")"}], "|", 
+               RowBox[{"(", 
+                RowBox[{"Whitespace", "~~", "EndOfString"}], ")"}]}], 
+              "\[RuleDelayed]", "\"\<\>\""}]}], "]"}], ",", 
+           RowBox[{"Whitespace", "\[Rule]", "\"\< \>\""}]}], " ", "]"}], 
+         "&"}], "/@", "wordList"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"uniquePhrases", " ", "=", " ", 
+       RowBox[{"DeleteDuplicates", "[", "phrases", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"thinnedLists", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Count", "[", 
+             RowBox[{
+              RowBox[{"StringContainsQ", "[", 
+               RowBox[{"uniquePhrases", ",", " ", "#"}], " ", "]"}], ",", " ",
+               "True"}], "]"}], ">", "1"}], ",", " ", 
+           RowBox[{"DeleteCases", "[", 
+            RowBox[{"uniquePhrases", ",", " ", "#"}], "]"}], ",", " ", 
+           "Nothing"}], "]"}], "&"}], "/@", "vocabulary"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"thinned", " ", "=", " ", 
+       RowBox[{"Intersection", " ", "@@", " ", "thinnedLists"}]}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7787350331321917`*^9, 3.778735056892764*^9}, {
+  3.778735147181038*^9, 3.778735160729645*^9}, {3.778735252567709*^9, 
+  3.7787352960791235`*^9}, {3.7787353389728165`*^9, 3.7787353998521357`*^9}, {
+  3.778735532900267*^9, 3.7787355984611874`*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"2834f6d0-fe43-4b9e-a1c3-0fe50f0b1b1c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"phraseScore", "[", 
+     RowBox[{"s_", ",", " ", "scores_"}], "]"}], ":=", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"l", ",", " ", "values"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"l", " ", "=", " ", 
+        RowBox[{"StringSplit", "[", 
+         RowBox[{"s", ",", " ", 
+          RowBox[{"{", "\"\< \>\"", "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"values", " ", "=", " ", 
+        RowBox[{"Values", "[", 
+         RowBox[{"KeyTake", "[", 
+          RowBox[{"scores", ",", " ", "l"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Total", "[", "values", "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.7784066244256406`*^9, 3.77840670986946*^9}, {
+  3.7784069389901896`*^9, 3.77840694245282*^9}, {3.778407023858716*^9, 
+  3.778407063881866*^9}, {3.7784070949610834`*^9, 3.778407151933553*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"a7c39def-d30e-4ca7-8d11-ab686e4addfb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"scoringPhrases", "[", 
+    RowBox[{"scoreAssociation_", ",", " ", "phrases_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "keyPhrasesScore", ",", " ", "keyPhrasesAssociation", ",", " ", 
+       "keyPhrasesSorted"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"keyPhrasesScore", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"phraseScore", "[", 
+          RowBox[{"#", ",", " ", "scoreAssociation"}], "]"}], "&"}], "/@", 
+        "phrases"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"keyPhrasesAssociation", "=", " ", 
+       RowBox[{"AssociationThread", "[", 
+        RowBox[{"phrases", ",", " ", "keyPhrasesScore"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"keyPhrasesSorted", " ", "=", " ", 
+       RowBox[{"Sort", "[", 
+        RowBox[{"keyPhrasesAssociation", ",", " ", "Greater"}], "]"}]}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7787359111456456`*^9, 3.77873597016825*^9}, {
+  3.7787360445021806`*^9, 3.778736061118707*^9}, {3.778736150748806*^9, 
+  3.778736252664959*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"79eb2ec1-dad9-402c-9f5d-651a35cae15b"],
+
+Cell[CellGroupData[{
+
+Cell["Text", "Subsubsection",
+ CellChangeTimes->{{3.778752318740135*^9, 
+  3.778752322787037*^9}},ExpressionUUID->"743c1091-5b0b-4a13-a3df-\
+32979d46a2e4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generateKeyWords", "[", 
+    RowBox[{"text_", ",", " ", "numberOfKeyWords_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "generatedVocabulary", ",", " ", "textSingular", ",", " ", "textNA", 
+       ",", " ", "vocabulary", ",", " ", "tupleGraph", ",", " ", 
+       "matrixWeight", ",", " ", "scoreAssociation", ",", " ", "phrases", ",",
+        " ", "keyPhrases"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"generatedVocabulary", " ", "=", " ", 
+       RowBox[{"generatingVocabulary", "[", "text", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"textSingular", " ", "=", " ", 
+       RowBox[{"generatedVocabulary", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"textNA", " ", "=", " ", 
+       RowBox[{"generatedVocabulary", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"vocabulary", " ", "=", " ", 
+       RowBox[{"DeleteDuplicates", "[", "textNA", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"tupleGraph", " ", "=", " ", 
+       RowBox[{"calculatingTextDistance", "[", 
+        RowBox[{"vocabulary", ",", " ", "textNA"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"matrixWeight", " ", "=", " ", 
+       RowBox[{"WeightedAdjacencyMatrix", "[", "tupleGraph", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"scoreAssociation", " ", "=", " ", 
+       RowBox[{"assigningScores", "[", 
+        RowBox[{"matrixWeight", ",", " ", "vocabulary"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"phrases", " ", "=", " ", 
+       RowBox[{"generatingPhrases", "[", 
+        RowBox[{"textSingular", ",", " ", "vocabulary"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"keyPhrases", " ", "=", " ", 
+       RowBox[{"scoringPhrases", "[", 
+        RowBox[{"scoreAssociation", ",", " ", "phrases"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Take", "[", 
+       RowBox[{
+        RowBox[{"Keys", "[", "keyPhrases", "]"}], ",", " ", 
+        "numberOfKeyWords"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.778734090805252*^9, 3.778734182511634*^9}, {
+   3.778734279688734*^9, 3.778734333659626*^9}, {3.778734372512276*^9, 
+   3.778734457299344*^9}, {3.7787345303006816`*^9, 3.7787345349039583`*^9}, {
+   3.778734625707079*^9, 3.77873463365777*^9}, {3.7787349219886312`*^9, 
+   3.77873501350816*^9}, {3.778735099483074*^9, 3.7787351263261967`*^9}, {
+   3.778735611669586*^9, 3.7787356496525216`*^9}, {3.778735714627203*^9, 
+   3.778735734807531*^9}, 3.7787359914734483`*^9, 3.7787360305572567`*^9, {
+   3.7787362664337482`*^9, 3.7787363315575037`*^9}, {3.778737284040721*^9, 
+   3.7787372854607315`*^9}, {3.77873747886784*^9, 3.7787374811934943`*^9}, {
+   3.778738810188547*^9, 3.7787388170334363`*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"f5f3c308-1c22-4d5d-bc32-e40f11e1a915"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Audio", "Subsubsection",
+ CellChangeTimes->{{3.778752307499132*^9, 
+  3.7787523081566277`*^9}},ExpressionUUID->"7a88b270-ad91-4ad1-8da0-\
+75ba4a57b10a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generateKeyWordsAudio", "[", 
+    RowBox[{"audio_", ",", " ", "numberOfKeyWords_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "text", ",", "generatedVocabulary", ",", " ", "textSingular", ",", " ", 
+       "textNA", ",", " ", "vocabulary", ",", " ", "tupleGraph", ",", " ", 
+       "matrixWeight", ",", " ", "scoreAssociation", ",", " ", "phrases", ",",
+        " ", "keyPhrases"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"text", " ", "=", " ", 
+       RowBox[{"SpeechRecognize", "[", "audio", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"generateKeyWords", "[", 
+       RowBox[{"text", ",", " ", "numberOfKeyWords"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.778738866923932*^9, 3.778738907323662*^9}, {
+  3.778752296503336*^9, 
+  3.7787523024815893`*^9}},ExpressionUUID->"25ab66e7-1892-4003-af44-\
+9ccd275f56d0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Video", "Subsubsection",
+ CellChangeTimes->{{3.77875231201735*^9, 
+  3.778752314753298*^9}},ExpressionUUID->"5cdf3d57-d913-4d05-b2bb-\
+71e6baa2df87"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generateKeyWordsVideo", "[", 
+    RowBox[{"url_", ",", " ", "numberOfKeyWords_"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "goToYDL", ",", "extractAudio", ",", "audioPath", ",", "audio", ",", 
+       "text", ",", "generatedVocabulary", ",", " ", "textSingular", ",", " ",
+        "textNA", ",", " ", "vocabulary", ",", " ", "tupleGraph", ",", " ", 
+       "matrixWeight", ",", " ", "scoreAssociation", ",", " ", "phrases", ",",
+        " ", "keyPhrases"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"goToYDL", " ", "=", " ", 
+       RowBox[{"\"\<cd \>\"", " ", "<>", " ", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"NotebookDirectory", "[", "]"}], ",", " ", "\"\<ydl\>\""}],
+           "}"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"extractAudio", " ", "=", " ", 
+       RowBox[{"RunProcess", "[", 
+        RowBox[{"$SystemShell", ",", "All", ",", 
+         RowBox[{
+         "goToYDL", " ", "<>", "\"\<\\nyoutube-dl \>\"", "<>", " ", "url", 
+          " ", "<>", 
+          "\"\< -x --audio-format mp3 -o \\\"only_audio.%(ext)s\\\"\nexit\n\>\
+\""}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"audioPath", " ", "=", " ", 
+       RowBox[{"FileNameJoin", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"NotebookDirectory", "[", "]"}], ",", " ", "\"\<ydl\>\"", 
+          ",", " ", "\"\<only_audio.mp3\>\""}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"audio", " ", "=", " ", 
+       RowBox[{"Import", "[", "audioPath", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"generateKeyWordsAudio", "[", 
+       RowBox[{"audio", ",", " ", "numberOfKeyWords"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.778745384500008*^9, 3.7787453913607073`*^9}, {
+  3.778745536653325*^9, 3.778745574841299*^9}, {3.778745606361044*^9, 
+  3.7787457311844068`*^9}, {3.778745772594686*^9, 3.77874577932273*^9}},
+ CellLabel->"In[35]:=",ExpressionUUID->"78bd74b9-2388-4624-aef6-51e8955de8c5"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1536, 791},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+Magnification:>1.5 Inherited,
+FrontEndVersion->"12.0 for Microsoft Windows (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 192, 3, 146, "Title",ExpressionUUID->"30144e72-fd46-483b-b7e2-3b32b315571e"],
+Cell[775, 27, 535, 11, 66, "Input",ExpressionUUID->"e0074f63-8aec-4377-8aca-a5b48fb2b871"],
+Cell[1313, 40, 4026, 87, 888, "Input",ExpressionUUID->"b5776b98-5a45-481a-b997-1b0e7eb1f1ac"],
+Cell[5342, 129, 1731, 43, 318, "Input",ExpressionUUID->"20b81889-02a1-4e7b-8d11-34c6ced35df8"],
+Cell[7076, 174, 2471, 59, 318, "Input",ExpressionUUID->"96de0fd0-4f38-4a3c-b719-26b24b91e279"],
+Cell[9550, 235, 2577, 59, 542, "Input",ExpressionUUID->"63646c57-b665-42e5-b370-f47d7efe0104"],
+Cell[12130, 296, 3173, 73, 593, "Input",ExpressionUUID->"2834f6d0-fe43-4b9e-a1c3-0fe50f0b1b1c"],
+Cell[15306, 371, 1137, 26, 318, "Input",ExpressionUUID->"a7c39def-d30e-4ca7-8d11-ab686e4addfb"],
+Cell[16446, 399, 1290, 30, 264, "Input",ExpressionUUID->"79eb2ec1-dad9-402c-9f5d-651a35cae15b"],
+Cell[CellGroupData[{
+Cell[17761, 433, 155, 3, 67, "Subsubsection",ExpressionUUID->"743c1091-5b0b-4a13-a3df-32979d46a2e4"],
+Cell[17919, 438, 3048, 61, 521, "Input",ExpressionUUID->"f5f3c308-1c22-4d5d-bc32-e40f11e1a915"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21004, 504, 158, 3, 67, "Subsubsection",ExpressionUUID->"7a88b270-ad91-4ad1-8da0-75ba4a57b10a"],
+Cell[21165, 509, 1027, 24, 239, "Input",ExpressionUUID->"25ab66e7-1892-4003-af44-9ccd275f56d0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22229, 538, 155, 3, 67, "Subsubsection",ExpressionUUID->"5cdf3d57-d913-4d05-b2bb-71e6baa2df87"],
+Cell[22387, 543, 2194, 47, 488, "Input",ExpressionUUID->"78bd74b9-2388-4624-aef6-51e8955de8c5"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
